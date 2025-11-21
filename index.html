@@ -1,0 +1,1254 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>Calculadora IBPSS / Perfil de Salud Vesical</title>
+  <style>
+    /* Layout general */
+    body {
+      margin: 0;
+      padding: 20px;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Arial, sans-serif;
+      background: #f3f4f6;
+      color: #111827;
+    }
+    .container {
+      max-width: 1100px;
+      margin: 0 auto;
+    }
+    h1 {
+      font-size: 1.9rem;
+      margin-bottom: 0.25rem;
+      color: #111827;
+    }
+    .intro {
+      font-size: 0.9rem;
+      margin-bottom: 1rem;
+      color: #4b5563;
+    }
+    .card {
+      background: #ffffff;
+      border-radius: 12px;
+      box-shadow: 0 4px 12px rgba(15, 23, 42, 0.08);
+      padding: 20px 24px;
+      margin-bottom: 16px;
+      border: 1px solid #e5e7eb;
+    }
+
+    /* Fieldsets y grid */
+    fieldset {
+      border: none;
+      padding: 0;
+      margin: 0 0 1.2rem 0;
+    }
+    legend {
+      font-weight: 600;
+      margin-bottom: 0.4rem;
+      color: #111827;
+      font-size: 1rem;
+    }
+    .grid-2 {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+      gap: 0.75rem 1.5rem;
+    }
+    label {
+      font-size: 0.9rem;
+      display: block;
+      margin-bottom: 0.2rem;
+      color: #374151;
+    }
+    input[type="text"],
+    input[type="number"],
+    input[type="date"] {
+      width: 100%;
+      padding: 0.4rem 0.5rem;
+      border-radius: 6px;
+      border: 1px solid #d1d5db;
+      font-size: 0.9rem;
+      box-sizing: border-box;
+    }
+    input[type="text"]:focus,
+    input[type="number"]:focus,
+    input[type="date"]:focus {
+      outline: none;
+      border-color: #2563eb;
+      box-shadow: 0 0 0 1px rgba(37, 99, 235, 0.3);
+    }
+
+    /* Preguntas */
+    .question {
+      border-radius: 10px;
+      border: 1px solid #e5e7eb;
+      background: #f9fafb;
+      padding: 0.75rem 0.9rem;
+      margin-bottom: 0.75rem;
+    }
+    .q-header {
+      display: flex;
+      align-items: flex-start;
+      margin-bottom: 0.4rem;
+      gap: 0.5rem;
+    }
+    .q-num {
+      width: 26px;
+      height: 26px;
+      border-radius: 999px;
+      background: #2563eb;
+      color: #ffffff;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.8rem;
+      flex-shrink: 0;
+      font-weight: 600;
+    }
+    .q-title {
+      font-weight: 600;
+      font-size: 0.96rem;
+      color: #111827;
+    }
+    .q-subtitle {
+      font-size: 0.8rem;
+      color: #6b7280;
+      margin-top: 0.1rem;
+    }
+
+    /* Opciones tipo píldora */
+    .options-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.35rem;
+      margin-top: 0.4rem;
+    }
+    .option-pill {
+      position: relative;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 999px;
+      padding: 0.25rem 0.7rem;
+      border: 1px solid #d1d5db;
+      cursor: pointer;
+      font-size: 0.8rem;
+      background: #ffffff;
+      user-select: none;
+      transition: background 0.15s ease, color 0.15s ease, border-color 0.15s ease, transform 0.05s ease;
+    }
+    .option-pill input {
+      display: none;
+    }
+    .option-pill span {
+      pointer-events: none;
+      white-space: nowrap;
+    }
+    .option-pill:hover {
+      border-color: #2563eb;
+      transform: translateY(-1px);
+    }
+    .option-pill.selected {
+      background: #2563eb;
+      color: #ffffff;
+      border-color: #2563eb;
+      font-weight: 600;
+    }
+
+    .small-note {
+      font-size: 0.75rem;
+      color: #6b7280;
+      margin-top: 0.25rem;
+    }
+
+    /* Botones */
+    .buttons {
+      margin: 0.9rem 0 0.4rem 0;
+      display: flex;
+      justify-content: flex-end;
+      gap: 0.5rem;
+      flex-wrap: wrap;
+    }
+    .buttons button {
+      padding: 0.45rem 0.95rem;
+      border-radius: 999px;
+      border: 1px solid #2563eb;
+      background: #2563eb;
+      color: #ffffff;
+      cursor: pointer;
+      font-size: 0.9rem;
+      font-weight: 500;
+      min-width: 110px;
+      transition: background 0.15s ease, color 0.15s ease, box-shadow 0.15s ease, transform 0.05s ease;
+    }
+    .buttons button.secondary {
+      background: #ffffff;
+      color: #2563eb;
+    }
+    .buttons button:hover {
+      box-shadow: 0 3px 8px rgba(37, 99, 235, 0.35);
+      transform: translateY(-1px);
+    }
+
+    /* Resultados */
+    #resultados {
+      margin-top: 0.5rem;
+    }
+    #resumenTexto {
+      font-size: 0.9rem;
+      white-space: pre-wrap;
+      background: #f9fafb;
+      padding: 0.65rem 0.75rem;
+      border-radius: 8px;
+      border: 1px solid #e5e7eb;
+      margin-top: 0.4rem;
+      color: #111827;
+    }
+
+    /* MVP Etapas */
+    .mvp-stages {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.4rem;
+      margin-top: 0.6rem;
+    }
+    .mvp-stage {
+      flex: 1;
+      min-width: 95px;
+      padding: 0.45rem 0.5rem;
+      border-radius: 9px;
+      background: #fee2e2;
+      text-align: center;
+      font-size: 0.8rem;
+      border: 1px solid #fecaca;
+      color: #7f1d1d;
+    }
+    .mvp-stage strong {
+      display: block;
+      margin-bottom: 0.15rem;
+      font-size: 0.82rem;
+    }
+    .mvp-stage.active {
+      background: #b91c1c;
+      color: #ffffff;
+      border-color: #b91c1c;
+      font-weight: 600;
+      transform: scale(1.03);
+      box-shadow: 0 3px 8px rgba(185, 28, 28, 0.45);
+    }
+
+    .nota {
+      font-size: 0.75rem;
+      color: #6b7280;
+      margin-top: 0.45rem;
+    }
+
+    /* Triangle of triage */
+    .triage-grid {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.5rem;
+      margin-top: 0.4rem;
+    }
+    .triage-box {
+      flex: 1;
+      min-width: 170px;
+      padding: 0.55rem 0.65rem;
+      border-radius: 9px;
+      border: 1px solid #e5e7eb;
+      background: #f9fafb;
+      font-size: 0.82rem;
+    }
+    .triage-box strong {
+      display: block;
+      margin-bottom: 0.2rem;
+      color: #111827;
+    }
+    .triage-value {
+      margin-top: 0.15rem;
+      font-weight: 600;
+      color: #111827;
+    }
+    .level-low {
+      border-color: #22c55e;
+      background: #ecfdf3;
+    }
+    .level-medium {
+      border-color: #f97316;
+      background: #fff7ed;
+    }
+    .level-high {
+      border-color: #ef4444;
+      background: #fef2f2;
+    }
+    .triage-global {
+      margin-top: 0.5rem;
+      font-size: 0.87rem;
+      font-weight: 600;
+      color: #111827;
+    }
+
+    /* VAS QoL */
+    .vas-wrapper {
+      margin-top: 0.35rem;
+    }
+    #qol_vas {
+      width: 100%;
+    }
+    .vas-labels {
+      display: flex;
+      justify-content: space-between;
+      font-size: 0.7rem;
+      margin-top: 0.2rem;
+      color: #6b7280;
+    }
+    .vas-bar {
+      position: relative;
+      height: 10px;
+      background: #e5e7eb;
+      border-radius: 999px;
+      margin-top: 0.35rem;
+      overflow: hidden;
+    }
+    .vas-fill {
+      height: 100%;
+      border-radius: 999px;
+      background: linear-gradient(90deg, #22c55e, #facc15, #ef4444);
+      width: 50%;
+      transition: width 0.2s ease;
+    }
+
+    /* Texto exportable */
+    #textoExportable {
+      width: 100%;
+      height: 240px;
+      margin-top: 0.5rem;
+      font-family: "SFMono-Regular", Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+      white-space: pre-wrap;
+      font-size: 0.83rem;
+      padding: 0.6rem;
+      border-radius: 8px;
+      border: 1px solid #d1d5db;
+      box-sizing: border-box;
+      background: #f9fafb;
+      color: #111827;
+    }
+
+    @media (max-width: 600px) {
+      .card {
+        padding: 16px 14px;
+      }
+      .q-header {
+        align-items: flex-start;
+      }
+    }
+  </style>
+</head>
+<body>
+<div class="container">
+
+  <div class="card">
+    <h1>Calculadora IBPSS / Perfil de Salud Vesical</h1>
+    <p class="intro">
+      Herramienta para uso clínico durante el interrogatorio. Las preguntas están formuladas en lenguaje sencillo,
+      pero la puntuación sigue el esquema IBPSS/IPSS estándar. Se añade un perfil tipo MVP (Five Stages + Triangle
+      of Triage), SHIM simplificado, escala VAS, un índice compuesto de progresión/daño vesical (experimental) y
+      un porcentaje de mejoría potencial de síntomas basado únicamente en la situación actual. Adaptado y desarrollado por
+      Juan David Iregui-Parra, 2025.
+    </p>
+
+    <form id="ibpssForm" onsubmit="return false;">
+
+      <fieldset>
+        <legend>Datos básicos</legend>
+        <div class="grid-2">
+          <div>
+            <label for="nombre">Nombre del paciente (opcional)</label>
+            <input type="text" id="nombre">
+          </div>
+          <div>
+            <label for="edad">Edad (años, opcional)</label>
+            <input type="number" id="edad" min="0" max="120">
+          </div>
+          <div>
+            <label for="fecha">Fecha de la consulta</label>
+            <input type="date" id="fecha">
+          </div>
+        </div>
+      </fieldset>
+
+      <fieldset>
+        <legend>Preguntas de síntomas (último mes)</legend>
+
+        <!-- Pregunta 1 -->
+        <div class="question">
+          <div class="q-header">
+            <div class="q-num">1</div>
+            <div>
+              <div class="q-title">Sensación de no vaciar completamente la vejiga</div>
+              <div class="q-subtitle">
+                “Cuando termina de orinar, ¿qué tanto siente que quedó orina adentro y no vació del todo?”
+              </div>
+            </div>
+          </div>
+          <div class="options-row" data-question="q1">
+            <label class="option-pill"><input type="radio" name="q1" value="0"><span>Nunca</span></label>
+            <label class="option-pill"><input type="radio" name="q1" value="1"><span>Rara vez</span></label>
+            <label class="option-pill"><input type="radio" name="q1" value="2"><span>A veces</span></label>
+            <label class="option-pill"><input type="radio" name="q1" value="3"><span>La mitad de las veces</span></label>
+            <label class="option-pill"><input type="radio" name="q1" value="4"><span>Muy frecuente</span></label>
+            <label class="option-pill"><input type="radio" name="q1" value="5"><span>Casi siempre</span></label>
+          </div>
+          <div class="small-note">Equivalente a “vaciamiento incompleto” del IPSS.</div>
+        </div>
+
+        <!-- Pregunta 2 -->
+        <div class="question">
+          <div class="q-header">
+            <div class="q-num">2</div>
+            <div>
+              <div class="q-title">Necesidad de orinar de nuevo en menos de 2 horas</div>
+              <div class="q-subtitle">
+                “Durante el día, ¿qué tanto le pasa que orina y antes de 2 horas ya siente que tiene que volver al baño?”
+              </div>
+            </div>
+          </div>
+          <div class="options-row" data-question="q2">
+            <label class="option-pill"><input type="radio" name="q2" value="0"><span>Nunca</span></label>
+            <label class="option-pill"><input type="radio" name="q2" value="1"><span>Rara vez</span></label>
+            <label class="option-pill"><input type="radio" name="q2" value="2"><span>A veces</span></label>
+            <label class="option-pill"><input type="radio" name="q2" value="3"><span>La mitad de las veces</span></label>
+            <label class="option-pill"><input type="radio" name="q2" value="4"><span>Muy frecuente</span></label>
+            <label class="option-pill"><input type="radio" name="q2" value="5"><span>Casi siempre</span></label>
+          </div>
+          <div class="small-note">Equivalente a “frecuencia” del IPSS.</div>
+        </div>
+
+        <!-- Pregunta 3 -->
+        <div class="question">
+          <div class="q-header">
+            <div class="q-num">3</div>
+            <div>
+              <div class="q-title">Chorro que se detiene y reinicia</div>
+              <div class="q-subtitle">
+                “Cuando está orinando, ¿qué tanto se corta el chorro y vuelve a salir en varias ‘etapas’?”
+              </div>
+            </div>
+          </div>
+          <div class="options-row" data-question="q3">
+            <label class="option-pill"><input type="radio" name="q3" value="0"><span>Nunca</span></label>
+            <label class="option-pill"><input type="radio" name="q3" value="1"><span>Rara vez</span></label>
+            <label class="option-pill"><input type="radio" name="q3" value="2"><span>A veces</span></label>
+            <label class="option-pill"><input type="radio" name="q3" value="3"><span>La mitad de las veces</span></label>
+            <label class="option-pill"><input type="radio" name="q3" value="4"><span>Muy frecuente</span></label>
+            <label class="option-pill"><input type="radio" name="q3" value="5"><span>Casi siempre</span></label>
+          </div>
+          <div class="small-note">Equivalente a “intermitencia” del IPSS.</div>
+        </div>
+
+        <!-- Pregunta 4 -->
+        <div class="question">
+          <div class="q-header">
+            <div class="q-num">4</div>
+            <div>
+              <div class="q-title">Ganas urgentes difíciles de aguantar</div>
+              <div class="q-subtitle">
+                “¿Qué tanto le da una urgencia fuerte de orinar que siente que casi no alcanza a llegar al baño?”
+              </div>
+            </div>
+          </div>
+          <div class="options-row" data-question="q4">
+            <label class="option-pill"><input type="radio" name="q4" value="0"><span>Nunca</span></label>
+            <label class="option-pill"><input type="radio" name="q4" value="1"><span>Rara vez</span></label>
+            <label class="option-pill"><input type="radio" name="q4" value="2"><span>A veces</span></label>
+            <label class="option-pill"><input type="radio" name="q4" value="3"><span>La mitad de las veces</span></label>
+            <label class="option-pill"><input type="radio" name="q4" value="4"><span>Muy frecuente</span></label>
+            <label class="option-pill"><input type="radio" name="q4" value="5"><span>Casi siempre</span></label>
+          </div>
+          <div class="small-note">Equivalente a “urgencia” del IPSS.</div>
+        </div>
+
+        <!-- Pregunta 5 -->
+        <div class="question">
+          <div class="q-header">
+            <div class="q-num">5</div>
+            <div>
+              <div class="q-title">Chorro débil</div>
+              <div class="q-subtitle">
+                “Cuando orina, ¿qué tanto siente que el chorro es flojo o delgado?”
+              </div>
+            </div>
+          </div>
+          <div class="options-row" data-question="q5">
+            <label class="option-pill"><input type="radio" name="q5" value="0"><span>Nunca</span></label>
+            <label class="option-pill"><input type="radio" name="q5" value="1"><span>Rara vez</span></label>
+            <label class="option-pill"><input type="radio" name="q5" value="2"><span>A veces</span></label>
+            <label class="option-pill"><input type="radio" name="q5" value="3"><span>La mitad de las veces</span></label>
+            <label class="option-pill"><input type="radio" name="q5" value="4"><span>Muy frecuente</span></label>
+            <label class="option-pill"><input type="radio" name="q5" value="5"><span>Casi siempre</span></label>
+          </div>
+          <div class="small-note">Equivalente a “flujo débil” del IPSS.</div>
+        </div>
+
+        <!-- Pregunta 6 -->
+        <div class="question">
+          <div class="q-header">
+            <div class="q-num">6</div>
+            <div>
+              <div class="q-title">Necesidad de pujar para empezar a orinar</div>
+              <div class="q-subtitle">
+                “¿Qué tanto tiene que hacer fuerza o pujar con el abdomen para que salga la orina?”
+              </div>
+            </div>
+          </div>
+          <div class="options-row" data-question="q6">
+            <label class="option-pill"><input type="radio" name="q6" value="0"><span>Nunca</span></label>
+            <label class="option-pill"><input type="radio" name="q6" value="1"><span>Rara vez</span></label>
+            <label class="option-pill"><input type="radio" name="q6" value="2"><span>A veces</span></label>
+            <label class="option-pill"><input type="radio" name="q6" value="3"><span>La mitad de las veces</span></label>
+            <label class="option-pill"><input type="radio" name="q6" value="4"><span>Muy frecuente</span></label>
+            <label class="option-pill"><input type="radio" name="q6" value="5"><span>Casi siempre</span></label>
+          </div>
+          <div class="small-note">Equivalente a “esfuerzo” del IPSS.</div>
+        </div>
+
+        <!-- Pregunta 7 -->
+        <div class="question">
+          <div class="q-header">
+            <div class="q-num">7</div>
+            <div>
+              <div class="q-title">Veces que se levanta a orinar de noche</div>
+              <div class="q-subtitle">
+                “En una noche típica, desde que se acuesta a dormir hasta que se levanta, ¿cuántas veces va al baño a orinar?”
+              </div>
+            </div>
+          </div>
+          <div class="options-row" data-question="q7">
+            <label class="option-pill"><input type="radio" name="q7" value="0"><span>0 veces</span></label>
+            <label class="option-pill"><input type="radio" name="q7" value="1"><span>1 vez</span></label>
+            <label class="option-pill"><input type="radio" name="q7" value="2"><span>2 veces</span></label>
+            <label class="option-pill"><input type="radio" name="q7" value="3"><span>3 veces</span></label>
+            <label class="option-pill"><input type="radio" name="q7" value="4"><span>4 veces</span></label>
+            <label class="option-pill"><input type="radio" name="q7" value="5"><span>≥5 veces</span></label>
+          </div>
+          <div class="small-note">Equivalente a “nicturia” del IPSS.</div>
+        </div>
+
+      </fieldset>
+
+      <fieldset>
+        <legend>Calidad de vida y preguntas adicionales IBPSS</legend>
+
+        <div class="question">
+          <div class="q-header">
+            <div class="q-num">QoL</div>
+            <div>
+              <div class="q-title">¿Cómo se siente con la forma en que orina actualmente?</div>
+              <div class="q-subtitle">
+                “Si tuviera que seguir orinando así como está ahora, ¿qué tan contento o incómodo se sentiría?”
+              </div>
+            </div>
+          </div>
+          <div class="options-row" data-question="qol">
+            <label class="option-pill"><input type="radio" name="qol" value="0"><span>Encantado</span></label>
+            <label class="option-pill"><input type="radio" name="qol" value="1"><span>Satisfecho</span></label>
+            <label class="option-pill"><input type="radio" name="qol" value="2"><span>Mayormente satisfecho</span></label>
+            <label class="option-pill"><input type="radio" name="qol" value="3"><span>Mitad y mitad</span></label>
+            <label class="option-pill"><input type="radio" name="qol" value="4"><span>Mayormente insatisfecho</span></label>
+            <label class="option-pill"><input type="radio" name="qol" value="5"><span>Infeliz</span></label>
+            <label class="option-pill"><input type="radio" name="qol" value="6"><span>Terrible</span></label>
+          </div>
+        </div>
+
+        <!-- Escala VAS para QoL -->
+        <div class="question">
+          <div class="q-header">
+            <div class="q-num">VAS</div>
+            <div>
+              <div class="q-title">Escala visual análoga de compromiso de calidad de vida (0–10)</div>
+              <div class="q-subtitle">
+                Deslice la barra donde mejor represente cuánto afectan los síntomas urinarios su calidad de vida.
+              </div>
+            </div>
+          </div>
+          <div class="vas-wrapper">
+            <input type="range" id="qol_vas" min="0" max="10" value="5" oninput="actualizarVAS()">
+            <div class="vas-labels">
+              <span>0<br><small>Nada afectada</small></span>
+              <span>5<br><small>Molestia moderada</small></span>
+              <span>10<br><small>Máximo impacto</small></span>
+            </div>
+            <div class="vas-bar">
+              <div class="vas-fill" id="vasFill"></div>
+            </div>
+            <div class="small-note">
+              Valor actual VAS-QoL: <span id="vasValor">5</span> / 10.
+            </div>
+          </div>
+        </div>
+
+        <div class="grid-2">
+          <div class="question">
+            <div class="q-title">Urgencia con escapes (incontinencia de urgencia)</div>
+            <div class="q-subtitle">
+              “¿Alguna vez ha tenido pérdidas de orina o mojado protector/ropa justo después de una urgencia fuerte de orinar?”
+            </div>
+            <div class="options-row" data-question="uui">
+              <label class="option-pill"><input type="radio" name="uui" value="no"><span>No</span></label>
+              <label class="option-pill"><input type="radio" name="uui" value="si"><span>Sí</span></label>
+            </div>
+          </div>
+
+          <div class="question">
+            <div class="q-title">Retención aguda de orina</div>
+            <div class="q-subtitle">
+              “¿Alguna vez se ha quedado completamente ‘tapado’ sin poder orinar y han tenido que colocarle sonda/catéter para vaciar la vejiga?”
+            </div>
+            <div class="options-row" data-question="retencion">
+              <label class="option-pill"><input type="radio" name="retencion" value="no"><span>No</span></label>
+              <label class="option-pill"><input type="radio" name="retencion" value="si"><span>Sí</span></label>
+            </div>
+          </div>
+        </div>
+      </fieldset>
+
+      <!-- SHIM simplificado -->
+      <fieldset>
+        <legend>Función sexual – SHIM simplificado (últimos 6 meses)</legend>
+
+        <div class="question">
+          <div class="q-header">
+            <div class="q-num">S1</div>
+            <div>
+              <div class="q-title">Confianza para lograr y mantener la erección</div>
+              <div class="q-subtitle">
+                “En general, ¿qué tanta confianza tiene en poder lograr y mantener una erección?”
+              </div>
+            </div>
+          </div>
+          <div class="options-row" data-question="shim1">
+            <label class="option-pill"><input type="radio" name="shim1" value="1"><span>Muy baja</span></label>
+            <label class="option-pill"><input type="radio" name="shim1" value="2"><span>Baja</span></label>
+            <label class="option-pill"><input type="radio" name="shim1" value="3"><span>Moderada</span></label>
+            <label class="option-pill"><input type="radio" name="shim1" value="4"><span>Alta</span></label>
+            <label class="option-pill"><input type="radio" name="shim1" value="5"><span>Muy alta</span></label>
+          </div>
+        </div>
+
+        <div class="question">
+          <div class="q-header">
+            <div class="q-num">S2</div>
+            <div>
+              <div class="q-title">Frecuencia de erecciones suficientes</div>
+              <div class="q-subtitle">
+                “Cuando tiene estimulación sexual, ¿con qué frecuencia logra una erección lo bastante rígida para la penetración?”
+              </div>
+            </div>
+          </div>
+          <div class="options-row" data-question="shim2">
+            <label class="option-pill"><input type="radio" name="shim2" value="1"><span>Casi nunca</span></label>
+            <label class="option-pill"><input type="radio" name="shim2" value="2"><span>Pocas veces</span></label>
+            <label class="option-pill"><input type="radio" name="shim2" value="3"><span>A veces</span></label>
+            <label class="option-pill"><input type="radio" name="shim2" value="4"><span>La mayoría de las veces</span></label>
+            <label class="option-pill"><input type="radio" name="shim2" value="5"><span>Casi siempre</span></label>
+          </div>
+        </div>
+
+        <div class="question">
+          <div class="q-header">
+            <div class="q-num">S3</div>
+            <div>
+              <div class="q-title">Mantenimiento de la erección tras la penetración</div>
+              <div class="q-subtitle">
+                “Después de la penetración, ¿con qué frecuencia mantiene la erección durante el acto sexual?”
+              </div>
+            </div>
+          </div>
+          <div class="options-row" data-question="shim3">
+            <label class="option-pill"><input type="radio" name="shim3" value="1"><span>Casi nunca</span></label>
+            <label class="option-pill"><input type="radio" name="shim3" value="2"><span>Pocas veces</span></label>
+            <label class="option-pill"><input type="radio" name="shim3" value="3"><span>A veces</span></label>
+            <label class="option-pill"><input type="radio" name="shim3" value="4"><span>La mayoría de las veces</span></label>
+            <label class="option-pill"><input type="radio" name="shim3" value="5"><span>Casi siempre</span></label>
+          </div>
+        </div>
+
+        <div class="question">
+          <div class="q-header">
+            <div class="q-num">S4</div>
+            <div>
+              <div class="q-title">Dificultad para mantener la erección</div>
+              <div class="q-subtitle">
+                “Durante el acto sexual, ¿qué tan difícil le resulta mantener la erección hasta el final?”
+              </div>
+            </div>
+          </div>
+          <div class="options-row" data-question="shim4">
+            <label class="option-pill"><input type="radio" name="shim4" value="1"><span>Extremadamente difícil</span></label>
+            <label class="option-pill"><input type="radio" name="shim4" value="2"><span>Muy difícil</span></label>
+            <label class="option-pill"><input type="radio" name="shim4" value="3"><span>Algo difícil</span></label>
+            <label class="option-pill"><input type="radio" name="shim4" value="4"><span>Poco difícil</span></label>
+            <label class="option-pill"><input type="radio" name="shim4" value="5"><span>No es difícil</span></label>
+          </div>
+        </div>
+
+        <div class="question">
+          <div class="q-header">
+            <div class="q-num">S5</div>
+            <div>
+              <div class="q-title">Satisfacción global con la vida sexual</div>
+              <div class="q-subtitle">
+                “En general, ¿qué tan satisfecho está con su vida sexual?”
+              </div>
+            </div>
+          </div>
+          <div class="options-row" data-question="shim5">
+            <label class="option-pill"><input type="radio" name="shim5" value="1"><span>Muy insatisfecho</span></label>
+            <label class="option-pill"><input type="radio" name="shim5" value="2"><span>Insatisfecho</span></label>
+            <label class="option-pill"><input type="radio" name="shim5" value="3"><span>Ni satisfecho ni insatisfecho</span></label>
+            <label class="option-pill"><input type="radio" name="shim5" value="4"><span>Satisfecho</span></label>
+            <label class="option-pill"><input type="radio" name="shim5" value="5"><span>Muy satisfecho</span></label>
+          </div>
+        </div>
+      </fieldset>
+
+      <div class="buttons">
+        <button type="button" onclick="calcularIBPSS()">Calcular perfil</button>
+        <button type="button" class="secondary" onclick="limpiarTodo()">Limpiar</button>
+      </div>
+
+    </form>
+  </div>
+
+  <div class="card" id="resultados">
+    <h2>Resultados y perfilamiento</h2>
+    <div id="resumenTexto">Complete las preguntas y haga clic en “Calcular perfil”.</div>
+
+    <h3>Etapa estimada de salud vesical (MVP Five Stages)</h3>
+    <div class="mvp-stages">
+      <div class="mvp-stage" data-stage="1">
+        <strong>I – BPO</strong>
+        <div>Síntomas obstructivos iniciales<br><small>“Las cosas se van poniendo lentas”</small></div>
+      </div>
+      <div class="mvp-stage" data-stage="2">
+        <strong>II – DOA</strong>
+        <div>Vejiga hiperactiva<br><small>Urgencia, frecuencia, nicturia</small></div>
+      </div>
+      <div class="mvp-stage" data-stage="3">
+        <strong>III – UUI</strong>
+        <div>Incontinencia de urgencia<br><small>“Niño rebelde”</small></div>
+      </div>
+      <div class="mvp-stage" data-stage="4">
+        <strong>IV – AUR</strong>
+        <div>Retención aguda<br><small>“Infarto” de la vejiga</small></div>
+      </div>
+      <div class="mvp-stage" data-stage="5">
+        <strong>V – DUA</strong>
+        <div>Vejiga hipoactiva / débil<br><small>Requiere estudio avanzado</small></div>
+      </div>
+    </div>
+
+    <p class="nota">
+      La etapa se calcula de forma aproximada a partir de síntomas, incontinencia de urgencia y antecedentes de retención.
+      Es una guía para orientar el diálogo con el paciente y decidir estudios, no un diagnóstico definitivo.
+    </p>
+
+    <h3>MVP Triangle of Triage (Síntomas – Riesgo – Daño)</h3>
+    <div class="triage-grid">
+      <div class="triage-box" id="triageSintomas">
+        <strong>Síntomas (IPSS)</strong>
+        <div class="triage-value">–</div>
+        <div class="small-note">Carga sintomática actual.</div>
+      </div>
+      <div class="triage-box" id="triageRiesgo">
+        <strong>Riesgo de progresión</strong>
+        <div class="triage-value">–</div>
+        <div class="small-note">Probabilidad de empeorar / requerir intervención.</div>
+      </div>
+      <div class="triage-box" id="triageDanio">
+        <strong>Daño actual</strong>
+        <div class="triage-value">–</div>
+        <div class="small-note">Retención, UUI marcada, QoL muy afectada.</div>
+      </div>
+    </div>
+    <p id="triageGlobal" class="triage-global">
+      Complete el cuestionario para ver el triage global (verde / amarillo / rojo).
+    </p>
+
+    <h3>Índice numérico de progresión/daño vesical (experimental)</h3>
+    <p id="indiceRiesgoTexto">
+      Se mostrará un porcentaje de riesgo/progresión basado en IPSS, QoL, VAS, UUI y AUR tras calcular el perfil.
+    </p>
+
+    <h3>Ventana de curación</h3>
+    <p id="ventanaCuracionTexto">
+      Complete el cuestionario para estimar si el paciente se encuentra en la “ventana de curación”.
+    </p>
+
+    <h3>Porcentaje de mejoría potencial de síntomas con intervención</h3>
+    <p id="mejoriaTexto">
+      Se estimará el porcentaje de mejoría potencial una vez se calcule el perfil.
+    </p>
+
+    <h3>Texto para historia clínica / exportación</h3>
+    <textarea id="textoExportable" readonly></textarea>
+
+    <div class="buttons">
+      <button type="button" onclick="copiarTexto()">Copiar texto</button>
+      <button type="button" class="secondary" onclick="exportarTxt()">Exportar .txt</button>
+      <button type="button" class="secondary" onclick="imprimirTexto()">Imprimir / PDF</button>
+    </div>
+  </div>
+
+</div>
+
+<script>
+  // Marcado visual de las opciones
+  document.querySelectorAll('.options-row').forEach(function(row) {
+    row.addEventListener('click', function(e) {
+      const label = e.target.closest('.option-pill');
+      if (!label) return;
+      const input = label.querySelector('input[type="radio"]');
+      if (!input) return;
+      input.checked = true;
+      row.querySelectorAll('.option-pill').forEach(function(lab) {
+        lab.classList.remove('selected');
+      });
+      label.classList.add('selected');
+    });
+  });
+
+  function obtenerValorSintoma(nombre) {
+    const seleccionado = document.querySelector('input[name="' + nombre + '"]:checked');
+    if (!seleccionado) return null;
+    return parseInt(seleccionado.value, 10);
+  }
+
+  function obtenerSiNo(nombre) {
+    const sel = document.querySelector('input[name="' + nombre + '"]:checked');
+    if (!sel) return null;
+    return sel.value; // "si" o "no"
+  }
+
+  function actualizarVAS() {
+    const slider = document.getElementById('qol_vas');
+    const fill = document.getElementById('vasFill');
+    const val = parseInt(slider.value, 10) || 0;
+    const pct = val * 10;
+    fill.style.width = pct + '%';
+    document.getElementById('vasValor').textContent = val;
+  }
+
+  function nivelTexto(level) {
+    if (level === 0) return "Bajo";
+    if (level === 1) return "Intermedio";
+    return "Alto";
+  }
+
+  function actualizarTriageBox(id, level, texto) {
+    const el = document.getElementById(id);
+    if (!el) return;
+    el.classList.remove('level-low','level-medium','level-high');
+    if (level === 0) el.classList.add('level-low');
+    else if (level === 1) el.classList.add('level-medium');
+    else el.classList.add('level-high');
+    const v = el.querySelector('.triage-value');
+    if (v) v.textContent = texto;
+  }
+
+  function calcularIBPSS() {
+    const preguntas = ["q1","q2","q3","q4","q5","q6","q7"];
+    let incompleto = false;
+    let valores = {};
+
+    preguntas.forEach(function(p) {
+      const v = obtenerValorSintoma(p);
+      if (v === null) incompleto = true;
+      valores[p] = v;
+    });
+
+    if (incompleto) {
+      alert("Por favor complete las 7 preguntas de síntomas antes de calcular.");
+      return;
+    }
+
+    const q1 = valores.q1, q2 = valores.q2, q3 = valores.q3,
+          q4 = valores.q4, q5 = valores.q5, q6 = valores.q6, q7 = valores.q7;
+
+    const total = q1 + q2 + q3 + q4 + q5 + q6 + q7;
+    const voiding = q1 + q3 + q5 + q6;
+    const storage = q2 + q4 + q7;
+
+    let severidad;
+    if (total === 0) severidad = "Sin síntomas relevantes (0 puntos).";
+    else if (total <= 7) severidad = "Síntomas leves (1–7 puntos).";
+    else if (total <= 19) severidad = "Síntomas moderados (8–19 puntos).";
+    else severidad = "Síntomas severos (20–35 puntos).";
+
+    const qol = obtenerValorSintoma("qol");
+    const mapasQoL = [
+      "0 – Encantado con la forma en que orina.",
+      "1 – Satisfecho.",
+      "2 – Mayormente satisfecho.",
+      "3 – Mitad satisfecho / mitad incómodo.",
+      "4 – Mayormente insatisfecho.",
+      "5 – Infeliz con la forma en que orina.",
+      "6 – Terrible, muy molesto por la forma en que orina."
+    ];
+    let textoQoL = "No consignado.";
+    if (qol !== null && qol >= 0 && qol <= 6) textoQoL = mapasQoL[qol];
+
+    const qolVAS = parseInt(document.getElementById('qol_vas').value, 10) || 0;
+    const uui = obtenerSiNo("uui");
+    const retencion = obtenerSiNo("retencion");
+
+    const uuiSi = (uui === "si");
+    const retSi = (retencion === "si");
+
+    // Distribución Nunca / A veces / Siempre (para IPSS)
+    let conteoNunca = 0, conteoAVeces = 0, conteoSiempre = 0;
+    preguntas.forEach(function(p) {
+      const v = valores[p];
+      if (v === 0) conteoNunca++;
+      else if (v >= 1 && v <= 3) conteoAVeces++;
+      else if (v >= 4) conteoSiempre++;
+    });
+
+    // Cálculo orientativo de etapa MVP
+    let etapa = 1;
+    let razones = [];
+
+    const urgenciaIntensa = (q4 >= 3);
+    const storageAlto = (storage >= 7);
+    const voidingAlto = (voiding >= 10);
+    const totalSevero = (total >= 20);
+
+    if (retSi) {
+      if (totalSevero && voidingAlto && !storageAlto) {
+        etapa = 5;
+        razones.push("Antecedente de retención aguda con síntomas obstructivos severos: sospecha de vejiga hipoactiva/debilitada.");
+      } else {
+        etapa = 4;
+        razones.push("Antecedente de retención aguda de orina que ha requerido sonda.");
+      }
+    } else if (uuiSi || urgenciaIntensa) {
+      etapa = 3;
+      razones.push("Predominio de urgencia intensa y/o incontinencia de urgencia.");
+    } else if (storageAlto && storage > voiding) {
+      etapa = 2;
+      razones.push("Predominio de síntomas de almacenamiento (vejiga hiperactiva).");
+    } else {
+      etapa = 1;
+      if (voidingAlto || total >= 8) {
+        razones.push("Síntomas principalmente obstructivos sin datos claros de daño avanzado.");
+      } else {
+        razones.push("Síntomas mínimos o leves, fase muy temprana.");
+      }
+    }
+
+    // Riesgo de progresión simplificado (categórico)
+    let riesgo;
+    let riskLevel;
+    if (retSi && (totalSevero || voidingAlto)) {
+      riesgo = "Riesgo muy alto de progresión / daño vesical.";
+      riskLevel = 2;
+    } else if (!retSi && (totalSevero || (voidingAlto && storageAlto))) {
+      riesgo = "Riesgo alto de progresión y de daño vesical si no se interviene de forma oportuna.";
+      riskLevel = 2;
+    } else if (!retSi && total >= 8) {
+      riesgo = "Riesgo intermedio de progresión; se sugiere seguimiento cercano y optimización del manejo.";
+      riskLevel = 1;
+    } else if (retSi) {
+      riesgo = "Ya existe antecedente de retención aguda; requiere vigilancia estrecha y planificación terapéutica.";
+      riskLevel = 2;
+    } else {
+      riesgo = "Riesgo bajo de progresión según síntomas actuales.";
+      riskLevel = 0;
+    }
+
+    // Sintomatología – nivel para triangle
+    let sintLevel;
+    if (total === 0 || total <= 7) sintLevel = 0;
+    else if (total <= 19) sintLevel = 1;
+    else sintLevel = 2;
+
+    // Daño actual – nivel para triangle
+    let harmLevel = 0;
+    if (retSi) harmLevel = 2;
+    else if (uuiSi || (qol !== null && qol >= 4) || qolVAS >= 7) harmLevel = 1;
+    else harmLevel = 0;
+
+    actualizarTriageBox(
+      "triageSintomas",
+      sintLevel,
+      nivelTexto(sintLevel) + " (" + severidad.replace("Síntomas ","").replace(" puntos.","") + ")"
+    );
+    actualizarTriageBox(
+      "triageRiesgo",
+      riskLevel,
+      nivelTexto(riskLevel) + " – " + riesgo
+    );
+    actualizarTriageBox(
+      "triageDanio",
+      harmLevel,
+      nivelTexto(harmLevel) + (harmLevel === 0 ? " – sin daño mayor evidente." :
+        (retSi ? " – retención aguda / posible daño vesical." :
+                 " – UUI/QoL marcadamente afectada."))
+    );
+
+    const maxLevel = Math.max(sintLevel, riskLevel, harmLevel);
+    const globalColor = maxLevel === 0 ? "VERDE (bajo)" :
+                        (maxLevel === 1 ? "AMARILLO (intermedio)" : "ROJO (alto)");
+    const triageGlobalTexto =
+      "Triage global MVP: " + globalColor +
+      ". Dimensiones – Síntomas: " + nivelTexto(sintLevel).toLowerCase() +
+      ", Riesgo: " + nivelTexto(riskLevel).toLowerCase() +
+      ", Daño: " + nivelTexto(harmLevel).toLowerCase() + ".";
+    document.getElementById("triageGlobal").textContent = triageGlobalTexto;
+
+    // Índice compuesto numérico de progresión/daño (0–100%) – heurístico
+    const ipss_idx = total / 35;       // 0–1
+    const storage_idx = storage / 15;  // 0–1
+    const voiding_idx = voiding / 20;  // 0–1
+    const qol_idx = (qol !== null ? qol / 6 : 0);  // 0–1
+    const vas_idx = qolVAS / 10;       // 0–1
+    const uui_idx = uuiSi ? 1 : 0;     // 0–1
+    const ret_idx = retSi ? 1 : 0;     // 0–1
+
+    let rawRisk =
+      0.35 * ipss_idx +
+      0.15 * storage_idx +
+      0.15 * voiding_idx +
+      0.15 * qol_idx +
+      0.10 * vas_idx +
+      0.05 * uui_idx +
+      0.05 * ret_idx;
+
+    if (rawRisk < 0) rawRisk = 0;
+    if (rawRisk > 1) rawRisk = 1;
+
+    const riskPercent = Math.round(rawRisk * 100);
+    let riskCat;
+    if (riskPercent < 25) riskCat = "bajo";
+    else if (riskPercent < 50) riskCat = "moderado";
+    else if (riskPercent < 75) riskCat = "alto";
+    else riskCat = "muy alto";
+
+    const riskTextoIndice =
+      "Índice compuesto de progresión/daño vesical: " + riskPercent + "% (riesgo " + riskCat +
+      "). Calculado a partir de IPSS total, subescalas de vaciado/almacenamiento, QoL IPSS, VAS, " +
+      "presencia de UUI y antecedente de AUR. Modelo heurístico no validado, de uso orientativo para la discusión clínica.";
+
+    document.getElementById("indiceRiesgoTexto").textContent = riskTextoIndice;
+
+    // Ventana de curación
+    let ventanaEstado, ventanaExp;
+    if (retSi || etapa >= 5) {
+      ventanaEstado = "Probablemente fuera de la ventana clásica de curación.";
+      ventanaExp = "Antecedente de retención aguda y/o sospecha de vejiga hipoactiva; el foco principal es preservar función y limitar daño, más que revertir completamente la fisiopatología.";
+    } else if (total >= 8 && total <= 19 && etapa <= 3) {
+      ventanaEstado = "En ventana de curación.";
+      ventanaExp = "Síntomas moderados, sin eventos de daño mayor y con vejiga aún compensada; la intervención oportuna podría normalizar síntomas y reducir riesgo de progresión.";
+    } else if (total >= 20 && etapa <= 3) {
+      ventanaEstado = "Ventana de curación estrecha / límite.";
+      ventanaExp = "Síntomas severos, pero sin retención ni sospecha fuerte de vejiga hipoactiva; conviene discutir intervenciones definitivas tempranas.";
+    } else {
+      ventanaEstado = "Ventana lejana (vigilancia).";
+      ventanaExp = "Síntomas leves, sin daño evidente; la prioridad es educación, ajustes de estilo de vida y seguimiento periódico.";
+    }
+    document.getElementById("ventanaCuracionTexto").textContent =
+      ventanaEstado + " " + ventanaExp;
+
+    // SHIM
+    const shimPreguntas = ["shim1","shim2","shim3","shim4","shim5"];
+    let shimTotal = 0;
+    let shimCompleto = true;
+    shimPreguntas.forEach(function(p) {
+      const v = obtenerValorSintoma(p);
+      if (v === null) shimCompleto = false;
+      else shimTotal += v;
+    });
+
+    let textoShim = "SHIM no consignado.";
+    if (shimCompleto) {
+      let clas;
+      if (shimTotal >= 22) clas = "Sin disfunción eréctil significativa (22–25).";
+      else if (shimTotal >= 17) clas = "Disfunción eréctil leve (17–21).";
+      else if (shimTotal >= 12) clas = "Disfunción eréctil leve a moderada (12–16).";
+      else if (shimTotal >= 8) clas = "Disfunción eréctil moderada (8–11).";
+      else clas = "Disfunción eréctil severa (5–7).";
+      textoShim = "Puntaje SHIM: " + shimTotal + " puntos. " + clas;
+    }
+
+    // Porcentaje de mejoría potencial de síntomas (solo con datos actuales)
+    const cargaSintomas = ipss_idx;                // 0–1
+    const cargaQoL = Math.max(qol_idx, vas_idx);  // 0–1
+    let mejoraPotRaw = 0.6 * cargaSintomas + 0.4 * cargaQoL;
+    if (mejoraPotRaw < 0) mejoraPotRaw = 0;
+    if (mejoraPotRaw > 1) mejoraPotRaw = 1;
+    const mejoraPotPct = Math.round(mejoraPotRaw * 100);
+
+    let catMejora;
+    if (mejoraPotPct < 25) catMejora = "bajo margen de mejoría (síntomas leves / poco impacto en QoL).";
+    else if (mejoraPotPct < 50) catMejora = "margen moderado de mejoría.";
+    else if (mejoraPotPct < 75) catMejora = "margen amplio de mejoría potencial.";
+    else catMejora = "margen muy amplio de mejoría potencial (síntomas intensos y QoL muy afectada).";
+
+    const mejoriaTexto =
+      "Porcentaje de mejoría potencial de síntomas con una intervención eficaz: " + mejoraPotPct + "%.\n" +
+      "Este porcentaje se calcula asumiendo que el objetivo terapéutico es llevar el IPSS y la afectación de calidad de vida (QoL/VAS) a valores mínimos.\n" +
+      "Interpretación: " + catMejora +
+      " Es un indicador heurístico de cuánto podría mejorar el paciente respecto a su situación actual si se logra un control óptimo de los síntomas.";
+
+    document.getElementById("mejoriaTexto").textContent = mejoriaTexto;
+
+    // Marcar etapa activa
+    document.querySelectorAll('.mvp-stage').forEach(function(div) {
+      const st = parseInt(div.getAttribute('data-stage'), 10);
+      if (st === etapa) div.classList.add('active');
+      else div.classList.remove('active');
+    });
+
+    // Construir texto exportable
+    const nombre = document.getElementById("nombre").value.trim();
+    const edad = document.getElementById("edad").value.trim();
+    const fecha = document.getElementById("fecha").value;
+
+    let resumen = "";
+    if (nombre) resumen += "Paciente: " + nombre + (edad ? " (" + edad + " años)" : "") + "\n";
+    else if (edad) resumen += "Edad: " + edad + " años\n";
+    if (fecha) resumen += "Fecha de consulta: " + fecha + "\n";
+    if (resumen) resumen += "\n";
+
+    resumen += "Puntaje total de síntomas IBPSS/IPSS: " + total + " puntos.\n";
+    resumen += severidad + "\n";
+    resumen += "Subescala de vaciado (obstructiva) – IPSS voiding: " + voiding + " puntos.\n";
+    resumen += "Subescala de almacenamiento (vejiga hiperactiva) – IPSS storage: " + storage + " puntos.\n\n";
+
+    resumen += "Calidad de vida (QoL IPSS): " + textoQoL + "\n";
+    resumen += "Escala visual análoga de calidad de vida (VAS 0–10): " + qolVAS + ".\n\n";
+
+    resumen += "Patrón global de frecuencia de síntomas (Nunca / A veces / Siempre): " +
+               conteoNunca + " / " + conteoAVeces + " / " + conteoSiempre + " respuestas.\n\n";
+
+    resumen += "Eventos clave adicionales:\n";
+    resumen += "- Incontinencia de urgencia: " + (uuiSi ? "Sí" : (uui === "no" ? "No" : "No consignado")) + ".\n";
+    resumen += "- Antecedente de retención aguda que requirió catéter: " +
+               (retSi ? "Sí" : (retencion === "no" ? "No" : "No consignado")) + ".\n\n";
+
+    const infoEtapas = {
+      1: "Etapa I – BPO (obstrucción prostática/flujo lento inicial). En esta fase las cosas empiezan a ir más lentas, pero la vejiga aún compensa.",
+      2: "Etapa II – DOA / vejiga hiperactiva. Predominan urgencia, aumento de frecuencia y nicturia.",
+      3: "Etapa III – UUI. La urgencia ya se acompaña de escapes de orina; la vejiga se comporta como un ‘niño rebelde’.",
+      4: "Etapa IV – AUR. Antecedentes de retención aguda de orina; la vejiga ha llegado a episodios de ‘bloqueo completo’.",
+      5: "Etapa V – DUA. Sospecha de vejiga hipoactiva/fatigada; se recomienda confirmación con urodinamia y enfoque avanzado."
+    };
+
+    resumen += "Perfilamiento orientativo de salud vesical (MVP Five Stages):\n";
+    resumen += "- Etapa estimada: " + infoEtapas[etapa] + "\n";
+    resumen += "- Motivos principales para esta clasificación: " + razones.join(" ") + "\n\n";
+
+    resumen += "MVP Triangle of Triage:\n";
+    resumen += "- " + triageGlobalTexto + "\n";
+    resumen += "- Detalle texto riesgo: " + riesgo + "\n\n";
+
+    resumen += "Índice numérico de progresión/daño vesical (experimental):\n";
+    resumen += "- " + riskTextoIndice + "\n\n";
+
+    resumen += "Ventana de curación:\n";
+    resumen += "- Estado: " + ventanaEstado + "\n";
+    resumen += "- Comentario: " + ventanaExp + "\n\n";
+
+    resumen += "Función sexual (SHIM simplificado):\n" + textoShim + "\n\n";
+
+    resumen += "Porcentaje de mejoría potencial de síntomas con intervención:\n";
+    resumen += "- " + mejoriaTexto + "\n\n";
+
+    resumen += "Nota: esta herramienta traduce las respuestas del interrogatorio a las puntuaciones IBPSS/IPSS, VAS de calidad de vida y SHIM,\n";
+    resumen += "y las integra en el modelo MVP Five Stages / Triangle of Triage y en un índice numérico heurístico de progresión/daño.\n";
+    resumen += "El índice de progresión y el porcentaje de mejoría potencial NO son modelos pronósticos validados, sino aproximaciones orientativas\n";
+    resumen += "para apoyar el razonamiento clínico y la comunicación con el paciente.\n";
+
+    document.getElementById("resumenTexto").textContent =
+      "Puntaje total: " + total + " puntos (" + severidad.replace("Síntomas ","").replace(" puntos.","") + ")\n" +
+      "Voiding: " + voiding + " | Storage: " + storage + "\n" +
+      "Etapa orientativa de salud vesical: " + infoEtapas[etapa].split(".")[0] + ".\n" +
+      triageGlobalTexto + "\n" +
+      "Índice de progresión/daño vesical: " + riskPercent + "% (riesgo " + riskCat + ").\n" +
+      "Ventana de curación: " + ventanaEstado + "\n" +
+      "Mejoría potencial de síntomas con intervención: " + mejoraPotPct + "%.";
+
+    document.getElementById("textoExportable").value = resumen;
+  }
+
+  function copiarTexto() {
+    const area = document.getElementById("textoExportable");
+    area.select();
+    area.setSelectionRange(0, 999999);
+    document.execCommand("copy");
+    alert("Texto copiado al portapapeles.");
+  }
+
+  function exportarTxt() {
+    const texto = document.getElementById("textoExportable").value;
+    if (!texto.trim()) {
+      alert("Primero calcule el perfil para generar el texto.");
+      return;
+    }
+    const blob = new Blob([texto], { type: "text/plain;charset=utf-8" });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement("a");
+    a.href = url;
+    a.download = "IBPSS_perfil_paciente.txt";
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    URL.revokeObjectURL(url);
+  }
+
+  function imprimirTexto() {
+    const texto = document.getElementById("textoExportable").value;
+    if (!texto.trim()) {
+      alert("Primero calcule el perfil para generar el texto.");
+      return;
+    }
+    const w = window.open("", "", "width=800,height=900");
+    w.document.write("<html><head><title>IBPSS – Resumen paciente</title></head><body><pre>");
+    w.document.write(texto.replace(/</g, "&lt;").replace(/>/g, "&gt;"));
+    w.document.write("</pre></body></html>");
+    w.document.close();
+    w.focus();
+    w.print();
+  }
+
+  function limpiarTodo() {
+    document.getElementById("ibpssForm").reset();
+    document.querySelectorAll('.option-pill').forEach(function(lab) {
+      lab.classList.remove('selected');
+    });
+    document.getElementById("resumenTexto").textContent =
+      "Complete las preguntas y haga clic en “Calcular perfil”.";
+    document.getElementById("textoExportable").value = "";
+    document.querySelectorAll('.mvp-stage').forEach(function(div) {
+      div.classList.remove('active');
+    });
+    document.getElementById("triageGlobal").textContent =
+      "Complete el cuestionario para ver el triage global (verde / amarillo / rojo).";
+    document.getElementById("ventanaCuracionTexto").textContent =
+      "Complete el cuestionario para estimar si el paciente se encuentra en la “ventana de curación”.";
+    document.getElementById("indiceRiesgoTexto").textContent =
+      "Se mostrará un porcentaje de riesgo/progresión basado en IPSS, QoL, VAS, UUI y AUR tras calcular el perfil.";
+    document.getElementById("mejoriaTexto").textContent =
+      "Se estimará el porcentaje de mejoría potencial una vez se calcule el perfil.";
+    actualizarTriageBox("triageSintomas", 0, "–");
+    actualizarTriageBox("triageRiesgo", 0, "–");
+    actualizarTriageBox("triageDanio", 0, "–");
+    document.getElementById('qol_vas').value = 5;
+    actualizarVAS();
+  }
+
+  document.addEventListener('DOMContentLoaded', function() {
+    actualizarVAS();
+  });
+</script>
+
+</body>
+</html>
